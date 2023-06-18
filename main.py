@@ -8,16 +8,16 @@ st.title('Diffusion-limited aggregation')
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    box_size = st.number_input('Box size:', value = 0)
+    box_size = st.number_input('Box size:', value = 101)
 with col2:
-    n_iterations = st.number_input('Number of iterations:', value = 0)
+    n_iterations = st.number_input('Number of iterations:', value = 100000)
 with col3:
-    freq = st.number_input('Save frame every nth iterations:', value = 0)
+    freq = st.number_input('Save frame every nth iterations:', value = 100)
 
 if st.button('Generate new pattern'):
     with st.spinner('Generating...'):
         init_grid(box_size)
-        images = generate_dla(n_iterations, freq)
+        images, n = generate_dla(n_iterations, freq)
         fig = plt.figure()
         im = plt.imshow(images[0], animated=True)
         def updatefig(frame):
@@ -26,4 +26,5 @@ if st.button('Generate new pattern'):
         ani = animation.FuncAnimation(fig, updatefig, frames = images.shape[0], blit=True)
         plot = ani.to_jshtml()
 
+    st.write(f'Model converged  after {n} iterations!')
     components.html(plot, height=1000)

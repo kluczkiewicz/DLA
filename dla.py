@@ -69,6 +69,7 @@ def generate_dla(k, m):
         if n % m == 0:  # change this to control frequency of visualizations
             #visualize(n)
             grids.append(np.copy(grid))
-
-    return np.array(grids)
+            if (len(grids) > 10) and (grids[-1] == grids[-2]).all() and (grids[-1] == grids[-10]).all():
+                break
+    return np.array(grids), n
 
